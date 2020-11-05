@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" width="980" height="600"></canvas>
+<p>Виберіть Датасет</p>
+<input type="file" value="dataset" onchange="readFile(this)" >
+
+<script >
+    // канвас
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d")
+
+
+
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, 960, 540)
+    ctx.fillStyle = "black"
+    ctx.fillRect(970, 0, 10, 550)
+    ctx.fillRect(0, 550, 980, 10)
+    ctx.fillRect(0, 0, 980, 10)
+    ctx.fillRect(0, 0, 10, 550)
+
+
+    function readFile(input_f){
+        ctx.fillStyle = "white"
+        ctx.fillRect(10, 10, 960, 540)
+        let file = input_f.files[0]
+        let reader = new FileReader();
+        reader.readAsText(file)
+        reader.onload = function(){
+            let first = false
+            let buf1 = []
+            let buf2 = []
+            for(let i = 0;i<reader.result.length;i++){
+                if(reader.result[i]===" "){
+                    first = true
+                }
+                if(reader.result[i]!==" "||reader.result){
+                    if(first){
+                        buf1.push(reader.result[i])
+                    }
+                    else{
+                        buf2.push(reader.result[i])
+                    }
+
+                }
+                if(reader.result[i]==="\n"){
+                    ctx.fillStyle = "black"
+                    ctx.fillRect(buf1.join(""),540-buf2.join(""),1,1)
+                    first = false
+                    buf1=[]
+                    buf2=[]
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
